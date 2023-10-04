@@ -19,17 +19,35 @@ This repo contains code for the paper [GPT-NER: Named Entity Recognition via Lar
 * openai==0.27.2
 * simcse==0.4
 
+_[**Mtr**: Use python 3.7 (not sure if 3.8 works, but those new versions like 3.11 definitely don't)_
+
+```pip install openai==0.27.2```
+
+```pip install simcse==0.4```
+]
+
 This repor mainly use two addtional packages: [SimCSE](https://github.com/princeton-nlp/SimCSE) and [OpenAI](https://github.com/openai/openai-python). So, if you want to know more about the arguments used in codes, please refer to the corresponding documents.
+
+_[**Mtr**: install **faiss** also. There's faiss-cpu and faiss-gpu. I choose faiss-cpu but it seems like they use the other one so I made some minor modifications in code_
+
+```pip install faiss-cpu```
+
+_maybe, i forgot]_
 
 ### Proposed Dataset
 For the full NER dataset, we follow [MRC-NER](https://arxiv.org/pdf/1910.11476.pdf) for preprocessing, and you can directly download these [here](https://github.com/ShannonAI/mrc-for-flat-nested-ner).
 
 For sampled **100-dataset**, we have put them on the [Google Drive](https://drive.google.com/drive/folders/1ByoM4Bb_BRmvp_D28QGRxrxfxnQtYeQi?usp=share_link).
 
+_[**Mtr**: I downloaded all and put them in data/]_
+
 ### Few-shot Demonstrations Retrieval
 For sentence-level embeddings, run `openai_access/extract_mrc_knn.py`.
 
 Note that you should change the directory for the input/output file and the used SimCSE model. In this repo, the model `sup-simcse-roberta-large` is used for SimCSE, and you can find it [here](https://huggingface.co/princeton-nlp/sup-simcse-roberta-large).
+
+_[**Mtr**:  Downloaded the model also, in data/models. There are two more files (flax_model.msgpack, pytorch_model.bin) which are too large to push so i'm gonna leave them out. Remember to download them when use nhé]_
+
 
 ### OpenAI Access
 

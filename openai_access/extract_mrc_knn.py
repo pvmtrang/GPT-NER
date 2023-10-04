@@ -7,6 +7,7 @@ import random
 
 
 def read_feature(dir_, prefix):
+    print("------>HERE AT read_feature " + os.path.join(dir_, f"{prefix}.start_word_feature_info.json"))
     info_file = json.load(open(os.path.join(dir_, f"{prefix}.start_word_feature_info.json")))
     features = np.memmap(os.path.join(dir_, f"{prefix}.start_word_feature.npy"), 
                          dtype=np.float32,
@@ -21,9 +22,11 @@ def read_feature(dir_, prefix):
 
 def read_mrc_data(dir_, prefix):
     file_name = os.path.join(dir_, f"mrc-ner.{prefix}")
+    print("------>HERE AT read_mrc_data " + file_name)
     return json.load(open(file_name, encoding="utf-8"))
 
 def read_idx(dir_, prefix="test"):
+    print("------>HERE AT read_idx " + dir_)
     print("reading ...")
     file_name = os.path.join(dir_, f"{prefix}.knn.jsonl")
     example_idx = []
@@ -34,12 +37,13 @@ def read_idx(dir_, prefix="test"):
     return example_idx
 
 def compute_mrc_knn(test_info, test_features, train_info, train_features, train_index, knn_num=32):
+    print("------>HERE AT compute_mrc_knn")
     quantizer = faiss.IndexFlatIP(train_info["hidden_size"])
     index = quantizer
     index.add(train_features.astype(np.float32))
     # 10 is a default setting in simcse
     index.nprobe = min(10, train_info["entity_num"])
-    index = faiss.index_gpu_to_cpu(index)
+    # index = faiss.index_gpu_to_cpu(index)
 
     top_value, top_index = index.search(test_features.astype(np.float32), knn_num)
 
@@ -58,7 +62,11 @@ def compute_mrc_knn(test_info, test_features, train_info, train_features, train_
     return example_idx, example_value
 
 def compute_simcse_knn(test_mrc_data, train_mrc_data, knn_num, test_index=None):
-    sim_model = SimCSE("/data2/wangshuhe/gpt3_ner/models/sup-simcse-roberta-large")
+    print("------>HERE AT compute_simcse_knn")
+    # to download model
+    # sim_model = SimCSE("princeton-nlp/sup-simcse-roberta-large")
+    # but i downloaded the model roi, nen la thui
+    sim_model = SimCSE("data/models/simcse-roberta-large")
 
     train_sentence = {}
     train_sentence_index = {}
@@ -85,7 +93,8 @@ def compute_simcse_knn(test_mrc_data, train_mrc_data, knn_num, test_index=None):
         index.add(embeddings.astype(np.float32))
         # 10 is a default setting in simcse
         index.nprobe = min(10, len(train_sentence[key]))
-        index = faiss.index_gpu_to_cpu(index)
+        # since i'm using faiss-cpu already, no need to move it to cpu memory
+        # index = faiss.index_gpu_to_cpu(index)
 
         train_index[key] = index
 
@@ -120,6 +129,7 @@ def compute_simcse_knn(test_mrc_data, train_mrc_data, knn_num, test_index=None):
     return example_idx, example_value
 
 def combine_full_knn(test_index, mrc_knn_index, simcse_knn_index):
+    print("------>HERE AT combine_full_knn")
     results = []
     mrc_idx = 0
     simcse_idx = 0
@@ -142,6 +152,7 @@ def combine_full_knn(test_index, mrc_knn_index, simcse_knn_index):
     return results
 
 def random_knn(test_mrc_data, train_mrc_data, knn_num):
+    print("------>HERE AT random_knn")
     train_sentence = {}
     train_sentence_index = {}
     for idx_, item in enumerate(train_mrc_data):
@@ -173,6 +184,13 @@ def write_file(dir_, data):
     file.close()
 
 if __name__ == '__main__':
+    their_data_path = "/data2/wangshuhe/gpt3_ner/gpt3-data/"
+
+    cwd = os.getcwd() # Get the current working directory (cwd)
+    files = os.listdir(cwd)  # Get all the files in that directory
+    print("Files in %r: %s" % (cwd, files))
+    data_path = "/data/"
+    
     # test_info, test_features, test_index = read_feature(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/start_word_embedding", prefix="test.100")
     # test_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/", prefix="test")
     # train_info, train_features, train_index = read_feature(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/start_word_embedding", prefix="train.dev")
@@ -213,10 +231,10 @@ if __name__ == '__main__':
     # index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
     # write_file(dir_="/home/wangshuhe/gpt-ner/openai_access/low_resource_data/conll_en/test.8.embedding.knn.jsonl", data=index_)
 
-    # test_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc", prefix="test.100")
-    # train_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc", prefix="train.dev")
-    # index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-    # write_file(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/test.100.simcse.32.knn.jsonl", data=index_)
+    test_mrc_data = read_mrc_data(dir_="data/conll_mrc", prefix="test.100")
+    train_mrc_data = read_mrc_data(dir_="data/conll_mrc", prefix="train")
+    index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
+    write_file(dir_="data/conll_mrc/test.100.simcse.32.knn.jsonl", data=index_)
 
     # test_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/low_resource", prefix="test")
     # train_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/low_resource", prefix="train.10000")
@@ -228,7 +246,7 @@ if __name__ == '__main__':
     # index_, value_ = random_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
     # write_file(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/test.random.32.knn.jsonl", data=index_)
 
-    test_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/ontonotes5_mrc", prefix="test.100")
-    train_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/ontonotes5_mrc", prefix="dev")
-    index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-    write_file(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/ontonotes5_mrc/test.100.simcse.dev.32.knn.jsonl", data=index_)
+    # test_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/ontonotes5_mrc", prefix="test.100")
+    # train_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/ontonotes5_mrc", prefix="dev")
+    # index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
+    # write_file(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/ontonotes5_mrc/test.100.simcse.dev.32.knn.jsonl", data=index_)
