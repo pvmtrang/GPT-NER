@@ -19,7 +19,7 @@ This repo contains code for the paper [GPT-NER: Named Entity Recognition via Lar
 * openai==0.27.2
 * simcse==0.4
 
-_[**Mtr**: Use python 3.7 (not sure if 3.8 works, but those new versions like 3.11 definitely don't)_
+_[**Mtr**: Use python 3.7 (not sure if 3.8 works, but those new versions like 3.11 definitely don't. According to faiss doc, faiss-gpu requires python 3.8-3.10)_
 
 ```pip install openai==0.27.2```
 
@@ -28,11 +28,9 @@ _[**Mtr**: Use python 3.7 (not sure if 3.8 works, but those new versions like 3.
 
 This repor mainly use two addtional packages: [SimCSE](https://github.com/princeton-nlp/SimCSE) and [OpenAI](https://github.com/openai/openai-python). So, if you want to know more about the arguments used in codes, please refer to the corresponding documents.
 
-_[**Mtr**: install **faiss** also. There's faiss-cpu and faiss-gpu. I choose faiss-cpu but it seems like they use the other one so I made some minor modifications in code_
+_[**Mtr**: install **faiss** also. There's faiss-cpu and faiss-gpu. I choose faiss-cpu but it seems like they use the other one so I made some minor modifications in code. faiss-gpu is not available on windows, i guess, according to faiss document_
 
-```pip install faiss-cpu```
-
-_maybe, i forgot]_
+_```pip install faiss-cpu```]_
 
 ### Proposed Dataset
 For the full NER dataset, we follow [MRC-NER](https://arxiv.org/pdf/1910.11476.pdf) for preprocessing, and you can directly download these [here](https://github.com/ShannonAI/mrc-for-flat-nested-ner).
@@ -46,14 +44,19 @@ For sentence-level embeddings, run `openai_access/extract_mrc_knn.py`.
 
 Note that you should change the directory for the input/output file and the used SimCSE model. In this repo, the model `sup-simcse-roberta-large` is used for SimCSE, and you can find it [here](https://huggingface.co/princeton-nlp/sup-simcse-roberta-large).
 
-_[**Mtr**:  Downloaded the model also, in data/models. There are two more files (flax_model.msgpack, pytorch_model.bin) which are too large to push so i'm gonna leave them out. Remember to download them when use nhé]_
+_[**Mtr**:  Downloaded the model also, in data/models. There are two more files (flax_model.msgpack, pytorch_model.bin) which are too large to push so i'm gonna leave them out. Remember to download them when use nhÃ©]_
 
 
 ### OpenAI Access
 
 We follow the official steps to access the GPT-* Models, and the document can be found [here](https://platform.openai.com/docs/api-reference/introduction). Before you run our scripts, you need to add **OPENAI_API_KEY**, which you can find it in your account profile, to the environment variable by the command `export OPENAI_API_KEY="YOUR_KEY"`.
 
-To get preditions, please run `openai_access/scripts/access_ai.sh`, and the used arguments are listed in file `openai_access/get_results_mrc_knn.py`.
+
+_[**Mtr**:  Windows: ```set OPENAI_API_KEY="YOUR_KEY"```_
+
+_Use .bat file instead of .sh for below steps huhu]_
+
+To get predictions, please run `openai_access/scripts/access_ai.sh`, and the used arguments are listed in file `openai_access/get_results_mrc_knn.py`.
 
 For self-verification, please run `openai_access/scripts/verify.sh`, and the used arguments are listed in file `openai_access/verify_results.py`.
 
