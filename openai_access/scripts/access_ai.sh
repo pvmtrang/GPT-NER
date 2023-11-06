@@ -1,10 +1,10 @@
-SOURCEDIR="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/"
+SOURCEDIR="data/conll_mrc"
 SOURCENAME="test.100"
 DATANAME="CONLL"
-EXAMPLEDIR="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/"
+EXAMPLEDIR="data/conll_mrc"
 EXAMPLENAME="test.100.simcse.32"
 EXAMPLENUM=8
-WRITEDIR="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/100-results"
+WRITEDIR="data/conll_mrc/100-results"
 WRITENAME="tmp.test"
 TRAINNAME="train.dev"
 

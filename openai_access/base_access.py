@@ -8,9 +8,13 @@ from typing import List
 import openai
 from tqdm import tqdm
 
-from logger import get_logger
+# use custom logger file
+from logger import get_logger 
+logger = get_logger(__name__) 
 
-logger = get_logger(__name__)
+# use pythonjsonlogger
+# import logging
+# logger = logging.getLogger(__name__)
 
 INIT_DELAY = 1
 EXPONENTIAL_BASE = 2
@@ -45,11 +49,7 @@ class AccessBase(object):
         logger.info(msg="prompt_and_result", extra={"prompt_list": prompt_list, "results": results})
         return results
 
-    def get_multiple_sample(
-            self,
-            prompt_list: List[str],
-            jitter: bool = True,
-    ):
+    def get_multiple_sample(self, prompt_list: List[str], jitter: bool = True,):
 
         errors: tuple = (openai.error.RateLimitError,)
         # Initialize variables

@@ -5,7 +5,7 @@ import os
 import faiss
 import random
 
-
+# where can i get this data nhi??
 def read_feature(dir_, prefix):
     print("------>HERE AT read_feature " + os.path.join(dir_, f"{prefix}.start_word_feature_info.json"))
     info_file = json.load(open(os.path.join(dir_, f"{prefix}.start_word_feature_info.json")))
@@ -43,7 +43,7 @@ def compute_mrc_knn(test_info, test_features, train_info, train_features, train_
     index.add(train_features.astype(np.float32))
     # 10 is a default setting in simcse
     index.nprobe = min(10, train_info["entity_num"])
-    # index = faiss.index_gpu_to_cpu(index)
+    # index = faiss.index_gpu_to_cpu(index) mtrang: hiding this to use faiss-cpu
 
     top_value, top_index = index.search(test_features.astype(np.float32), knn_num)
 
@@ -68,8 +68,8 @@ def compute_simcse_knn(test_mrc_data, train_mrc_data, knn_num, test_index=None):
     # but i downloaded the model roi, nen la thui
     sim_model = SimCSE("data/models/simcse-roberta-large")
 
-    train_sentence = {}
-    train_sentence_index = {}
+    train_sentence = {} #train_sentence[entity_label][a list of its contexts in the training set]
+    train_sentence_index = {} #train_sentence_index[entity_label][list of the above corresponding index in the training set]
     for idx_, item in enumerate(train_mrc_data):
         label = item["entity_label"]
         context = item["context"]
@@ -82,40 +82,49 @@ def compute_simcse_knn(test_mrc_data, train_mrc_data, knn_num, test_index=None):
         if label not in train_sentence:
             train_sentence[label] = []
             train_sentence_index[label] = []
-        train_sentence[label].append(context)
-        train_sentence_index[label].append(idx_)
+        train_sentence[label].append(context) #group train samples by label
+        train_sentence_index[label].append(idx_)    #and note lai index cua no
     
     train_index = {}
-    for key, _ in train_sentence.items():
+    for key, _ in train_sentence.items(): #for each entity label
+        #lam cai gi day ta?? huhu gio phai di doc code cua simcse a?? idk, calculate the embedding of all contexts?
         embeddings = sim_model.encode(train_sentence[key], batch_size=128, normalize_to_unit=True, return_numpy=True)
         quantizer = faiss.IndexFlatIP(embeddings.shape[1])
-        index = quantizer
+        index = quantizer #?? lmao
         index.add(embeddings.astype(np.float32))
         # 10 is a default setting in simcse
         index.nprobe = min(10, len(train_sentence[key]))
         # since i'm using faiss-cpu already, no need to move it to cpu memory
         # index = faiss.index_gpu_to_cpu(index)
 
-        train_index[key] = index
+        train_index[key] = index #store embeddings of each entity label's (<=10) contexts??
+    #-> loop thru all training samples -> calculate embedding of each entity label's list of contexts
+    #train_index vs train_sentence align in index
 
     example_idx = []
     example_value = []
-
-    if test_index is None:
-        for idx_ in range(len(test_mrc_data)):
+    if test_index is None: #test_index la gi ta?? the result?!?? 0.0 what??
+        for idx_ in range(len(test_mrc_data)): # ua sao ko enumerate(test_mrc_data) nua di
             context = test_mrc_data[idx_]["context"]
             label = test_mrc_data[idx_]["entity_label"]
-
+            # for each test sample -> get the embedding of its context
+            # -> search for knn_num nearest neighbor of that sample's label's context in the training set?
             embedding = sim_model.encode([context], batch_size=128, normalize_to_unit=True, keepdim=True, return_numpy=True)
             top_value, top_index = train_index[label].search(embedding.astype(np.float32), knn_num)
+            # get the k nearest contexts with the values of contexts and their indices in the training set
 
+            #why [0] only?? the nearest neighbor thui ha? or maybe that's how .search result is formatted??
             example_idx.append([train_sentence_index[label][int(i)] for i in top_index[0]])
+            # maybe [0] stores all k neighbor 
+            #-> loop through [0], foreach neighbor -> add its index in the train_set and its embedding value?
             example_value.append([float(value) for value in top_value[0]])
         
+        #return test_set[index] -> example_value[index]((a list of k neighbor's embedding context))
+        # example_idx[index]((a list of the neighbors' index in the train set))
         return example_idx, example_value
-
+    #to pass in another test set other than the mrc-ner.test a???
     for idx_, sub_index in enumerate(test_index):
-        if sub_index != 0:
+        if sub_index != 0: #hmm??
             continue
         context = test_mrc_data[idx_]["context"]
         label = test_mrc_data[idx_]["entity_label"]
@@ -184,12 +193,9 @@ def write_file(dir_, data):
     file.close()
 
 if __name__ == '__main__':
-    their_data_path = "/data2/wangshuhe/gpt3_ner/gpt3-data/"
 
     cwd = os.getcwd() # Get the current working directory (cwd)
-    files = os.listdir(cwd)  # Get all the files in that directory
-    print("Files in %r: %s" % (cwd, files))
-    data_path = "/data/"
+    files = os.listdir(cwd)  # Get all the files in that directory"
     
     # test_info, test_features, test_index = read_feature(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/start_word_embedding", prefix="test.100")
     # test_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/", prefix="test")
@@ -234,7 +240,7 @@ if __name__ == '__main__':
     test_mrc_data = read_mrc_data(dir_="data/conll_mrc", prefix="test.100")
     train_mrc_data = read_mrc_data(dir_="data/conll_mrc", prefix="train")
     index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-    write_file(dir_="data/conll_mrc/test.100.simcse.32.knn.jsonl", data=index_)
+    write_file(dir_="data/conll_mrc/test.100.simcse.32.knn.jsonl", data=index_) #only store the indices matrix thui
 
     # test_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/low_resource", prefix="test")
     # train_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/low_resource", prefix="train.10000")
