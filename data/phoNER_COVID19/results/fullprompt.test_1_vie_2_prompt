@@ -1,0 +1,130 @@
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể PATIENT_ID là số định danh cho một bệnh nhân mắc COVID-19 tại Việt Nam. Một bệnh nhân có số PATIENT_ID X nghĩa là bệnh nhân đó là người thứ X mắc COVID-19 tại Việt Nam. Dưới đây là một số ví dụ, hãy dự đoán thực thể PATIENT_ID cho câu đã cho giống như trong ví dụ
+Ví dụ: Trường hợp bệnh nhân 188 L.T.H. , theo thông tin từ cơ quan y tế địa phương , bệnh nhân về nhà ngày 14 - 4 và từ đó chỉ tiếp xúc với chồng và con , đây không phải là tái nhiễm mà do có thể virus yếu ở thời điểm lấy mẫu lần trước , hoặc vị trí lấy mẫu , thời điểm lấy mẫu dẫn đến âm tính giả .
+Ví dụ được gán nhãn: Trường hợp bệnh nhân @@188 L.T.H.## , theo thông tin từ cơ quan y tế địa phương , bệnh nhân về nhà ngày 14 - 4 và từ đó chỉ tiếp xúc với chồng và con , đây không phải là tái nhiễm mà do có thể virus yếu ở thời điểm lấy mẫu lần trước , hoặc vị trí lấy mẫu , thời điểm lấy mẫu dẫn đến âm tính giả .
+Ví dụ: Bệnh nhân 268 sốt , ho từ ngày 7 - 4 và được cách ly tại Bệnh viện đa khoa Đồng Văn .
+Ví dụ được gán nhãn: Bệnh nhân @@268## sốt , ho từ ngày 7 - 4 và được cách ly tại Bệnh viện đa khoa Đồng Văn .
+Ví dụ: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ được gán nhãn: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân @@420## ( bà P.T.B.P. , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ: Lãnh đạo huyện Chương Mỹ cho biết trên địa bàn huyện có một người tiếp xúc với bệnh nhân thứ 17 , đó là chị D.T.T. , đã tiếp xúc với bệnh nhân ngày 2 và ngày 4 - 3 .
+Ví dụ được gán nhãn: Lãnh đạo huyện Chương Mỹ cho biết trên địa bàn huyện có một người tiếp xúc với bệnh nhân thứ @@17## , đó là chị D.T.T. , đã tiếp xúc với bệnh nhân ngày 2 và ngày 4 - 3 .
+Ví dụ: Cụ thể , bệnh nhân số 251 là N.V.Đ. ( 64 tuổi , ở Hà Nam ) điều trị ở Bệnh viện Đa khoa Hà Nam từ ngày 20 - 3 , đến 7 - 4 bệnh nhân có kết quả xét nghiệm dương tính .
+Ví dụ được gán nhãn: Cụ thể , bệnh nhân số @@251## là N.V.Đ. ( 64 tuổi , ở Hà Nam ) điều trị ở Bệnh viện Đa khoa Hà Nam từ ngày 20 - 3 , đến 7 - 4 bệnh nhân có kết quả xét nghiệm dương tính .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể NAME là tên của bệnh nhân mắc COVID-19 hoặc của người có tiếp xúc với bệnh nhân COVID-19. Dưới đây là một số ví dụ, hãy dự đoán thực thể NAME cho câu đã cho giống như trong ví dụ
+Ví dụ: Còn bệnh nhân của Hải Phòng , chị T.A. , đã đi Đà Nẵng du lịch tháng 7 vừa qua và gần 1 tháng qua đã cách ly tại nhà trước khi đi Hàn Quốc .
+Ví dụ được gán nhãn: Còn bệnh nhân của Hải Phòng , chị @@T.A.## , đã đi Đà Nẵng du lịch tháng 7 vừa qua và gần 1 tháng qua đã cách ly tại nhà trước khi đi Hàn Quốc .
+Ví dụ: Trong số đó có anh D.Đ.P. , 27 tuổi , là lái xe đón bệnh nhân từ sân bay về , có thuê nhà ở địa chỉ 113 Trúc Bạch .
+Ví dụ được gán nhãn: Trong số đó có anh @@D.Đ.P.## , 27 tuổi , là lái xe đón bệnh nhân từ sân bay về , có thuê nhà ở địa chỉ 113 Trúc Bạch .
+Ví dụ: Trường hợp bệnh nhân 188 L.T.H. , theo thông tin từ cơ quan y tế địa phương , bệnh nhân về nhà ngày 14 - 4 và từ đó chỉ tiếp xúc với chồng và con , đây không phải là tái nhiễm mà do có thể virus yếu ở thời điểm lấy mẫu lần trước , hoặc vị trí lấy mẫu , thời điểm lấy mẫu dẫn đến âm tính giả .
+Ví dụ được gán nhãn: Trường hợp bệnh nhân 188 @@L.T.H.## , theo thông tin từ cơ quan y tế địa phương , bệnh nhân về nhà ngày 14 - 4 và từ đó chỉ tiếp xúc với chồng và con , đây không phải là tái nhiễm mà do có thể virus yếu ở thời điểm lấy mẫu lần trước , hoặc vị trí lấy mẫu , thời điểm lấy mẫu dẫn đến âm tính giả .
+Ví dụ: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ được gán nhãn: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà @@P.T.B.P.## , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ: Ngày 24 - 7 , bệnh nhân cùng mẹ và con là N.N.L. đến khám và nhập viện tại Bệnh viện Đà Nẵng , sau đó được chuyển đến khoa hồi sứct ích cực - chống độc .
+Ví dụ được gán nhãn: Ngày 24 - 7 , bệnh nhân cùng mẹ và con là @@N.N.L.## đến khám và nhập viện tại Bệnh viện Đà Nẵng , sau đó được chuyển đến khoa hồi sứct ích cực - chống độc .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể AGE là tuổi của bệnh nhân COVID-19 hoặc của người có tiếp xúc với bệnh nhân. Dưới đây là một số ví dụ, hãy dự đoán thực thể AGE cho câu đã cho giống như trong ví dụ
+Ví dụ: Trong số đó có anh D.Đ.P. , 27 tuổi , là lái xe đón bệnh nhân từ sân bay về , có thuê nhà ở địa chỉ 113 Trúc Bạch .
+Ví dụ được gán nhãn: Trong số đó có anh D.Đ.P. , @@27## tuổi , là lái xe đón bệnh nhân từ sân bay về , có thuê nhà ở địa chỉ 113 Trúc Bạch .
+Ví dụ: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ được gán nhãn: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , @@71## tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ: Cụ thể , bệnh nhân số 251 là N.V.Đ. ( 64 tuổi , ở Hà Nam ) điều trị ở Bệnh viện Đa khoa Hà Nam từ ngày 20 - 3 , đến 7 - 4 bệnh nhân có kết quả xét nghiệm dương tính .
+Ví dụ được gán nhãn: Cụ thể , bệnh nhân số 251 là N.V.Đ. ( @@64## tuổi , ở Hà Nam ) điều trị ở Bệnh viện Đa khoa Hà Nam từ ngày 20 - 3 , đến 7 - 4 bệnh nhân có kết quả xét nghiệm dương tính .
+Ví dụ: Bộ Y tế chiều 31/7 thông báo " bệnh nhân 428 " , 70 tuổi , ở Quảng Nam , tử vong sau 5 ngày được khẳng định dương tính nCoV , do " nhồi máu cơ tim trên nền bệnh lý nặng và mắc Covid - 19 " .
+Ví dụ được gán nhãn: Bộ Y tế chiều 31/7 thông báo " bệnh nhân 428 " , @@70## tuổi , ở Quảng Nam , tử vong sau 5 ngày được khẳng định dương tính nCoV , do " nhồi máu cơ tim trên nền bệnh lý nặng và mắc Covid - 19 " .
+Ví dụ: Bộ Y tế chiều 31/7 thông báo " bệnh nhân 428 " , 70 tuổi , ở Quảng Nam , tử vong sau 5 ngày được khẳng định dương tính nCoV .
+Ví dụ được gán nhãn: Bộ Y tế chiều 31/7 thông báo " bệnh nhân 428 " , @@70## tuổi , ở Quảng Nam , tử vong sau 5 ngày được khẳng định dương tính nCoV .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể GENDER là giới tính của bệnh nhân COVID-19 hoặc người có tiếp xúc với bệnh nhân. Dưới đây là một số ví dụ, hãy dự đoán thực thể GENDER cho câu đã cho giống như trong ví dụ
+Ví dụ: Chiều 6/8 , Bộ Y tế công bố thêm 30 ca nhiễm nCoV , trong đó có " bệnh nhân 723 " là con gái cụ , người đưa mẹ đến Bệnh viện Bình An và trực tiếp chăm sóc tại bệnh viện .
+Ví dụ được gán nhãn: Chiều 6/8 , Bộ Y tế công bố thêm 30 ca nhiễm nCoV , trong đó có " bệnh nhân 723 " là con @@gái## cụ , người đưa mẹ đến Bệnh viện Bình An và trực tiếp chăm sóc tại bệnh viện .
+Ví dụ: Trước đó , từ ngày 7 đến 11/8 , ba nhân viên của bà được công bố nhiễm nCoV , gồm nam " bệnh nhân 750 " , 28 tuổi , ở phường Đông Lễ , Đông Hà ; nữ " bệnh nhân 833 " , 29 tuổi , trú phường Đông Giang , Đông Hà ; nữ " bệnh nhân 861 " , 36 tuổi , trú xã Gio Châu , huyện Gio Linh .
+Ví dụ được gán nhãn: Trước đó , từ ngày 7 đến 11/8 , ba nhân viên của bà được công bố nhiễm nCoV , gồm @@nam## " bệnh nhân 750 " , 28 tuổi , ở phường Đông Lễ , Đông Hà ; @@nữ## " bệnh nhân 833 " , 29 tuổi , trú phường Đông Giang , Đông Hà ; @@nữ## " bệnh nhân 861 " , 36 tuổi , trú xã Gio Châu , huyện Gio Linh .
+Ví dụ: Theo thông tin của Bộ Y tế , trường hợp tử vong đầu tiên - ca bệnh 428 , được ghi nhận trong ngày 31 - 7 là bệnh nhân nam , 70 tuổi , có địa chỉ thường trú tại thành phố Hội An , tỉnh Quảng Nam .
+Ví dụ được gán nhãn: Theo thông tin của Bộ Y tế , trường hợp tử vong đầu tiên - ca bệnh 428 , được ghi nhận trong ngày 31 - 7 là bệnh nhân @@nam## , 70 tuổi , có địa chỉ thường trú tại thành phố Hội An , tỉnh Quảng Nam .
+Ví dụ: Trước đó , Bộ Y tế công bố bệnh nhân 171 là nữ , quốc tịch Việt Nam , 19 tuổi , là du học sinh tại Mỹ , địa chỉ ở phường 11 , quận 10 , TP.HCM.
+Ví dụ được gán nhãn: Trước đó , Bộ Y tế công bố bệnh nhân 171 là @@nữ## , quốc tịch Việt Nam , 19 tuổi , là du học sinh tại Mỹ , địa chỉ ở phường 11 , quận 10 , TP.HCM.
+Ví dụ: Ca bệnh 749 ( bệnh nhân 749 ) là nữ , 27 tuổi , có địa chỉ tại xã Vĩnh Hoà ( Vĩnh Linh , tỉnh Quảng Trị ) , là người chăm sóc người thân tại Khoa Ngoại - Thần kinh , Bệnh viện Đà Nẵng từ ngày 17 - 7 .
+Ví dụ được gán nhãn: Ca bệnh 749 ( bệnh nhân 749 ) là @@nữ## , 27 tuổi , có địa chỉ tại xã Vĩnh Hoà ( Vĩnh Linh , tỉnh Quảng Trị ) , là người chăm sóc người thân tại Khoa Ngoại - Thần kinh , Bệnh viện Đà Nẵng từ ngày 17 - 7 .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể JOB là công việc, nghề nghiệp của bệnh nhân COVID-19 hoặc người có tiếp xúc với bệnh nhân. Dưới đây là một số ví dụ, hãy dự đoán thực thể JOB cho câu đã cho giống như trong ví dụ
+Ví dụ: Trong số đó có anh D.Đ.P. , 27 tuổi , là lái xe đón bệnh nhân từ sân bay về , có thuê nhà ở địa chỉ 113 Trúc Bạch .
+Ví dụ được gán nhãn: Trong số đó có anh D.Đ.P. , 27 tuổi , là @@lái xe## đón bệnh nhân từ sân bay về , có thuê nhà ở địa chỉ 113 Trúc Bạch .
+Ví dụ: Thông tin từ Bộ Y tế cho biết chính quyền TP Hà Nội vừa có đề xuất công bố dịch , do đã có 4 ca nhiễm COVID - 19 trên địa bàn , bao gồm : N.H.N. ( 26 tuổi , bệnh nhân số 17 ) , D.Đ.P. ( lái xe của bệnh nhân số 17 ) , L.T.H. ( bác ruột bệnh nhân số 17 ) và N.Q.T. ( người đi cùng chuyến bay với bệnh nhân số 17 ) .
+Ví dụ được gán nhãn: Thông tin từ Bộ Y tế cho biết chính quyền TP Hà Nội vừa có đề xuất công bố dịch , do đã có 4 ca nhiễm COVID - 19 trên địa bàn , bao gồm : N.H.N. ( 26 tuổi , bệnh nhân số 17 ) , D.Đ.P. ( @@lái xe## của bệnh nhân số 17 ) , L.T.H. ( bác ruột bệnh nhân số 17 ) và N.Q.T. ( người đi cùng chuyến bay với bệnh nhân số 17 ) .
+Ví dụ: Theo Sở Y tế Hà Nội , sau khi rà soát toàn bộ lộ trình di chuyển của tài xế , ngoài cách ly những trường hợp đã tiếp xúc với tài xế D.Đ.P. , lực lượng chức năng đã vệ sinh , phun khử trùng , khử khuẩn toàn bộ những nơi anh D.Đ.P. tới , cũng như những nơi người tiếp xúc với tài xế sinh sống .
+Ví dụ được gán nhãn: Theo Sở Y tế Hà Nội , sau khi rà soát toàn bộ lộ trình di chuyển của tài xế , ngoài cách ly những trường hợp đã tiếp xúc với @@tài xế D.Đ.P.## , lực lượng chức năng đã vệ sinh , phun khử trùng , khử khuẩn toàn bộ những nơi anh D.Đ.P. tới , cũng như những nơi người tiếp xúc với tài xế sinh sống .
+Ví dụ: Hiện điều dưỡng H. đã được chuyển đến điều trị tại Bệnh viện dã chiến Hoà Vang , tình trạng sức khoẻ ổn định .
+Ví dụ được gán nhãn: Hiện @@điều dưỡng H.## đã được chuyển đến điều trị tại Bệnh viện dã chiến Hoà Vang , tình trạng sức khoẻ ổn định .
+Ví dụ: Ngày 8 - 5 , theo thông tin từ Bệnh viện Bệnh nhiệt đới TP. HCM , hiện bệnh nhân 91 , phi công người Anh , 43 tuổi vẫn trong tình trạng rất nguy kịch , hai phổi đông đặc , ngày càng có diễn tiến nặng , có biểu hiện nhiễm trùng phổi .
+Ví dụ được gán nhãn: Ngày 8 - 5 , theo thông tin từ Bệnh viện Bệnh nhiệt đới TP. HCM , hiện bệnh nhân 91 , @@phi công## người Anh , 43 tuổi vẫn trong tình trạng rất nguy kịch , hai phổi đông đặc , ngày càng có diễn tiến nặng , có biểu hiện nhiễm trùng phổi .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể LOCATION là các địa điểm, những nơi mà bệnh nhân COVID-19 đã đến. Dưới đây là một số ví dụ, hãy dự đoán thực thể LOCATION cho câu đã cho giống như trong ví dụ
+Ví dụ: Còn bệnh nhân của Hải Phòng , chị T.A. , đã đi Đà Nẵng du lịch tháng 7 vừa qua và gần 1 tháng qua đã cách ly tại nhà trước khi đi Hàn Quốc .
+Ví dụ được gán nhãn: Còn bệnh nhân của @@Hải Phòng## , chị T.A. , đã đi @@Đà Nẵng## du lịch tháng 7 vừa qua và gần 1 tháng qua đã cách ly tại nhà trước khi đi @@Hàn Quốc## .
+Ví dụ: Trong số đó có anh D.Đ.P. , 27 tuổi , là lái xe đón bệnh nhân từ sân bay về , có thuê nhà ở địa chỉ 113 Trúc Bạch .
+Ví dụ được gán nhãn: Trong số đó có anh D.Đ.P. , 27 tuổi , là lái xe đón bệnh nhân từ sân bay về , có thuê nhà ở địa chỉ @@113 Trúc Bạch## .
+Ví dụ: Bệnh nhân 268 sốt , ho từ ngày 7 - 4 và được cách ly tại Bệnh viện đa khoa Đồng Văn .
+Ví dụ được gán nhãn: Bệnh nhân 268 sốt , ho từ ngày 7 - 4 và được cách ly tại @@Bệnh viện đa khoa Đồng Văn## .
+Ví dụ: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ được gán nhãn: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , 71 tuổi , ngụ @@Đà Nẵng## ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có @@chung cư Lạc Long Quân## , @@phường 5## , @@quận 11## , @@TP. HCM## từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ: Ngày 24 - 7 , bệnh nhân cùng mẹ và con là N.N.L. đến khám và nhập viện tại Bệnh viện Đà Nẵng , sau đó được chuyển đến khoa hồi sứct ích cực - chống độc .
+Ví dụ được gán nhãn: Ngày 24 - 7 , bệnh nhân cùng mẹ và con là N.N.L. đến khám và nhập viện tại @@Bệnh viện Đà Nẵng## , sau đó được chuyển đến khoa hồi sứct ích cực - chống độc .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể ORGANIZATION là các tổ chức có liên quan đến bệnh nhân COVID-19 ví dụ như công ty, doanh nghiệp, tổ chức chính phủ, cơ quan. Dưới đây là một số ví dụ, hãy dự đoán thực thể ORGANIZATION cho câu đã cho giống như trong ví dụ
+Ví dụ: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ được gán nhãn: Tối cùng ngày , @@Bộ Y tế## thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ: Theo bản thông cáo được Bộ Y tế phát đi chiều nay , ngày 12 - 3 vừa qua , nhà báo H. đã có cuộc phỏng vấn với cựu đại sứ Pháp tại Việt Nam .
+Ví dụ được gán nhãn: Theo bản thông cáo được @@Bộ Y tế## phát đi chiều nay , ngày 12 - 3 vừa qua , nhà báo H. đã có cuộc phỏng vấn với cựu đại sứ Pháp tại Việt Nam .
+Ví dụ: Trước đó , tối 26 - 7 , ngay khi nhận được chỉ đạo của Trung tâm Kiểm soát bệnh tật TP. HCM về điều tra những người dân tiếp xúc với bệnh nhân 420 nhiễm COVID - 19 , Trung tâm Y tế quận 11 đã đến chung cư Lạc Long Quân , phường 5 , quận 11 để điều tra dịch tễ .
+Ví dụ được gán nhãn: Trước đó , tối 26 - 7 , ngay khi nhận được chỉ đạo của @@Trung tâm Kiểm soát bệnh tật TP. HCM## về điều tra những người dân tiếp xúc với bệnh nhân 420 nhiễm COVID - 19 , @@Trung tâm Y tế quận 11## đã đến chung cư Lạc Long Quân , phường 5 , quận 11 để điều tra dịch tễ .
+Ví dụ: Bình Thạnh Tuy nhiên bệnh nhân 326 vẫn được tiếp tục theo dõi hàng ngày đến hết 30 ngày theo quy định của Sở Y tế TP.HCM.
+Ví dụ được gán nhãn: Bình Thạnh Tuy nhiên bệnh nhân 326 vẫn được tiếp tục theo dõi hàng ngày đến hết 30 ngày theo quy định của @@Sở Y tế TP.HCM.##
+Ví dụ: Bộ Y tế chiều 31/7 thông báo " bệnh nhân 428 " , 70 tuổi , ở Quảng Nam , tử vong sau 5 ngày được khẳng định dương tính nCoV , do " nhồi máu cơ tim trên nền bệnh lý nặng và mắc Covid - 19 " .
+Ví dụ được gán nhãn: @@Bộ Y tế## chiều 31/7 thông báo " bệnh nhân 428 " , 70 tuổi , ở Quảng Nam , tử vong sau 5 ngày được khẳng định dương tính nCoV , do " nhồi máu cơ tim trên nền bệnh lý nặng và mắc Covid - 19 " .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể SYMPTOM_AND_DISEASE là các triệu chứng mà bệnh nhân COVID-19 mắc phải, hoặc các bệnh mà bệnh nhân đã có trước khi mắc COVID-19, hoặc các biến chứng khác thường thấy trong báo cáo tử vong, trong hồ sơ bệnh án. Dưới đây là một số ví dụ, hãy dự đoán thực thể SYMPTOM_AND_DISEASE cho câu đã cho giống như trong ví dụ
+Ví dụ: Anh B. cho biết anh từ Đức về Việt Nam và được đi cách ly tại Hà Nội , ngày thứ 9 của đợt cách ly anh có dấu hiệu ho , sốt , hơi đau vùng thắt lưng , xét nghiệm cho thấy dương tính với virus corona .
+Ví dụ được gán nhãn: Anh B. cho biết anh từ Đức về Việt Nam và được đi cách ly tại Hà Nội , ngày thứ 9 của đợt cách ly anh có dấu hiệu @@ho## , @@sốt## , @@hơi đau vùng thắt lưng## , xét nghiệm cho thấy dương tính với virus corona .
+Ví dụ: Bộ Y tế chiều 31/7 thông báo " bệnh nhân 428 " , 70 tuổi , ở Quảng Nam , tử vong sau 5 ngày được khẳng định dương tính nCoV , do " nhồi máu cơ tim trên nền bệnh lý nặng và mắc Covid - 19 " .
+Ví dụ được gán nhãn: Bộ Y tế chiều 31/7 thông báo " bệnh nhân 428 " , 70 tuổi , ở Quảng Nam , tử vong sau 5 ngày được khẳng định dương tính nCoV , do " @@nhồi máu cơ tim## trên nền bệnh lý nặng và mắc Covid - 19 " .
+Ví dụ: Ngày 22 - 8 , P. cũng đi khám bệnh và lấy thuốc ( do có tiền sử đau dạ dày ) tại Phòng khám Medic Sài Gòn có địa chỉ tại ấp Phú Bình , xã Hoà Hiệp , huyện Xuyên Mộc .
+Ví dụ được gán nhãn: Ngày 22 - 8 , P. cũng đi khám bệnh và lấy thuốc ( do có tiền sử @@đau dạ dày## ) tại Phòng khám Medic Sài Gòn có địa chỉ tại ấp Phú Bình , xã Hoà Hiệp , huyện Xuyên Mộc .
+Ví dụ: Ngày 29/7 đến ngày 31/7 , bệnh nhân có dấu hiệu đau đầu tăng dần , sốt nên báo cho y tế phường , sau đó vào Bệnh viện Đa khoa tỉnh Hà Nam .
+Ví dụ được gán nhãn: Ngày 29/7 đến ngày 31/7 , bệnh nhân có dấu hiệu @@đau đầu tăng dần## , @@sốt## nên báo cho y tế phường , sau đó vào Bệnh viện Đa khoa tỉnh Hà Nam .
+Ví dụ: Ngày 21 - 28/7 , bệnh nhân nhập viện vào khoa Cấp cứu Bệnh viện Đà Nẵng , sau đó mệt , không thở được , chuyển khoa Hồi sức tích cực - Chống độc .
+Ví dụ được gán nhãn: Ngày 21 - 28/7 , bệnh nhân nhập viện vào khoa Cấp cứu Bệnh viện Đà Nẵng , sau đó @@mệt## , @@không thở được## , chuyển khoa Hồi sức tích cực - Chống độc .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể TRANSPORTATION là biến số xe máy, biển số xe ô tô, số hiệu máy bay, xe bus, hay của các phương tiện giao thông mà bệnh nhân COVID-19 sử dụng. Dưới đây là một số ví dụ, hãy dự đoán thực thể TRANSPORTATION cho câu đã cho giống như trong ví dụ
+Ví dụ: Một số người Anh đi chuyến bay VN0054 cùng bệnh nhân 17 N.H.N. đã được cách ly tại Bệnh viện Đống Đa và đã có ấn tượng rất tốt .
+Ví dụ được gán nhãn: Một số người Anh đi chuyến bay @@VN0054## cùng bệnh nhân 17 N.H.N. đã được cách ly tại Bệnh viện Đống Đa và đã có ấn tượng rất tốt .
+Ví dụ: Còn trước đó tối 18 - 3 , trong 7 ca do Bộ Y tế thông báo , có đến 4 trường hợp là công dân Việt Nam , độ tuổi từ 23 đổ xuống , trong đó có một bệnh nhân 11 tuổi , địa chỉ ở huyện Thanh Miện , Hải Dương , về Việt Nam trên chuyến bay VN 0054 ngày 9 - 3 .
+Ví dụ được gán nhãn: Còn trước đó tối 18 - 3 , trong 7 ca do Bộ Y tế thông báo , có đến 4 trường hợp là công dân Việt Nam , độ tuổi từ 23 đổ xuống , trong đó có một bệnh nhân 11 tuổi , địa chỉ ở huyện Thanh Miện , Hải Dương , về Việt Nam trên chuyến bay @@VN 0054## ngày 9 - 3 .
+Ví dụ: Sau khi đến Hà Nội , vợ chồng ông Dixong đã đi du lịch Hạ Long và sau ca bệnh số 17 , tất cả những người đi cùng chuyến bay VN0054 hôm đó đều được tìm để xét nghiệm .
+Ví dụ được gán nhãn: Sau khi đến Hà Nội , vợ chồng ông Dixong đã đi du lịch Hạ Long và sau ca bệnh số 17 , tất cả những người đi cùng chuyến bay @@VN0054## hôm đó đều được tìm để xét nghiệm .
+Ví dụ: " Các bác sĩ đã cứu sống chúng tôi " - bệnh nhân số 24 là phụ nữ người Anh đi chuyến bay VN0054 đến Việt Nam du lịch rạng sáng 2 - 3 cùng chồng , cùng mắc COVID - 19 , được chuyển vào điều trị tại Bệnh viện Bệnh nhiệt đới trung ương nói khi nước mắt ướt mi .
+Ví dụ được gán nhãn: " Các bác sĩ đã cứu sống chúng tôi " - bệnh nhân số 24 là phụ nữ người Anh đi chuyến bay @@VN0054## đến Việt Nam du lịch rạng sáng 2 - 3 cùng chồng , cùng mắc COVID - 19 , được chuyển vào điều trị tại Bệnh viện Bệnh nhiệt đới trung ương nói khi nước mắt ướt mi .
+Ví dụ: Theo Sở Y tế , " bệnh nhân 620 " đi xe mang biển số xe 43 B - 03126 , hãng Kim Chi , xuất phát từ Đà Nẵng vào 20h ngày 27/7 , đến Bến xe Nước Ngầm , Hà Nội , lúc 8h30 ngày 28/7 .
+Ví dụ được gán nhãn: Theo Sở Y tế , " bệnh nhân 620 " đi xe mang biển số xe @@43 B - 03126## , hãng Kim Chi , xuất phát từ Đà Nẵng vào 20h ngày 27/7 , đến Bến xe Nước Ngầm , Hà Nội , lúc 8h30 ngày 28/7 .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:
+Áp dụng kiến thức ngôn ngữ học chuyên sâu vào một nhiệm vụ nhận diện thực thể có tên này. Bạn hãy tìm ra và đánh dấu thực thể DATE là tất cả ngày, ngày tháng xuất hiện trong câu. Dưới đây là một số ví dụ, hãy dự đoán thực thể DATE cho câu đã cho giống như trong ví dụ
+Ví dụ: Còn bệnh nhân của Hải Phòng , chị T.A. , đã đi Đà Nẵng du lịch tháng 7 vừa qua và gần 1 tháng qua đã cách ly tại nhà trước khi đi Hàn Quốc .
+Ví dụ được gán nhãn: Còn bệnh nhân của Hải Phòng , chị T.A. , đã đi Đà Nẵng du lịch @@tháng 7## vừa qua và gần 1 tháng qua đã cách ly tại nhà trước khi đi Hàn Quốc .
+Ví dụ: Trường hợp bệnh nhân 188 L.T.H. , theo thông tin từ cơ quan y tế địa phương , bệnh nhân về nhà ngày 14 - 4 và từ đó chỉ tiếp xúc với chồng và con , đây không phải là tái nhiễm mà do có thể virus yếu ở thời điểm lấy mẫu lần trước , hoặc vị trí lấy mẫu , thời điểm lấy mẫu dẫn đến âm tính giả .
+Ví dụ được gán nhãn: Trường hợp bệnh nhân 188 L.T.H. , theo thông tin từ cơ quan y tế địa phương , bệnh nhân về nhà ngày @@14 - 4## và từ đó chỉ tiếp xúc với chồng và con , đây không phải là tái nhiễm mà do có thể virus yếu ở thời điểm lấy mẫu lần trước , hoặc vị trí lấy mẫu , thời điểm lấy mẫu dẫn đến âm tính giả .
+Ví dụ: Bệnh nhân 268 sốt , ho từ ngày 7 - 4 và được cách ly tại Bệnh viện đa khoa Đồng Văn .
+Ví dụ được gán nhãn: Bệnh nhân 268 sốt , ho từ ngày @@7 - 4## và được cách ly tại Bệnh viện đa khoa Đồng Văn .
+Ví dụ: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày 21 - 6 đến 8 - 7 .
+Ví dụ được gán nhãn: Tối cùng ngày , Bộ Y tế thông báo hành trình của bệnh nhân 420 ( bà P.T.B.P. , 71 tuổi , ngụ Đà Nẵng ) , theo đó cho biết trước khi được phát hiện mắc bệnh , bà đã đi nhiều nơi , trong đó có chung cư Lạc Long Quân , phường 5 , quận 11 , TP. HCM từ ngày @@21 - 6## đến @@8 - 7## .
+Ví dụ: Ngày 24 - 7 , bệnh nhân cùng mẹ và con là N.N.L. đến khám và nhập viện tại Bệnh viện Đà Nẵng , sau đó được chuyển đến khoa hồi sứct ích cực - chống độc .
+Ví dụ được gán nhãn: Ngày @@24 - 7## , bệnh nhân cùng mẹ và con là N.N.L. đến khám và nhập viện tại Bệnh viện Đà Nẵng , sau đó được chuyển đến khoa hồi sứct ích cực - chống độc .
+Câu đã cho: Bác sĩ Trần Thanh Linh , từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực , cho biết " bệnh nhân 416 " vẫn đang duy trì ECMO , thở máy , hiện xơ phổi rất nhiều .
+Câu được gán nhãn:

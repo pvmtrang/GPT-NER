@@ -22,8 +22,11 @@ def read_feature(dir_, prefix):
 
 def read_mrc_data(dir_, prefix):
     file_name = os.path.join(dir_, f"mrc-ner.{prefix}")
-    print("------>HERE AT read_mrc_data " + file_name)
-    return json.load(open(file_name, encoding="utf-8"))
+    print("------>HERE AT read_mrc_data " + file_name) 
+    with open(file_name, encoding="utf-8") as file:
+        data = json.load(file)
+    #return json.load(open(file_name, encoding="utf-8"))
+    return data
 
 def read_idx(dir_, prefix="test"):
     print("------>HERE AT read_idx " + dir_)
@@ -70,8 +73,10 @@ def compute_simcse_knn(test_mrc_data, train_mrc_data, knn_num, test_index=None):
 
     train_sentence = {} #train_sentence[entity_label][a list of its contexts in the training set]
     train_sentence_index = {} #train_sentence_index[entity_label][list of the above corresponding index in the training set]
+    print("re-arrange context by entity type")
     for idx_, item in enumerate(train_mrc_data):
         label = item["entity_label"]
+        # print("this is label " + label)
         context = item["context"]
         # if len(item["start_position"]) == 0:
         #     if label not in train_sentence:
@@ -79,48 +84,59 @@ def compute_simcse_knn(test_mrc_data, train_mrc_data, knn_num, test_index=None):
         #         train_sentence_index[label] = []
         #     train_sentence[label].append(context)
         #     train_sentence_index[label].append(idx_)
-        if label not in train_sentence:
-            train_sentence[label] = []
-            train_sentence_index[label] = []
-        train_sentence[label].append(context) #group train samples by label
-        train_sentence_index[label].append(idx_)    #and note lai index cua no
+        if item["impossible"] == False: #chi duoc record cai context nao ma thuc su chua cai label day thoi chu????
+            if label not in train_sentence:     
+                train_sentence[label] = []
+                train_sentence_index[label] = []
+            train_sentence[label].append(context) #group train samples by label
+            train_sentence_index[label].append(idx_)    #and note lai index cua no
     
+    print("encode embedding for all contexts of each label type")
     train_index = {}
     for key, _ in train_sentence.items(): #for each entity label
+        print("--for type = " + str(key) + ": " + str(len(train_sentence[key])))
         #lam cai gi day ta?? huhu gio phai di doc code cua simcse a?? idk, calculate the embedding of all contexts?
         embeddings = sim_model.encode(train_sentence[key], batch_size=128, normalize_to_unit=True, return_numpy=True)
+        print("----done encoding")
         quantizer = faiss.IndexFlatIP(embeddings.shape[1])
         index = quantizer #?? lmao
         index.add(embeddings.astype(np.float32))
         # 10 is a default setting in simcse
-        index.nprobe = min(10, len(train_sentence[key]))
+        index.nprobe = min(10, len(train_sentence[key])) #number of clusters to explore while finding neighbor
         # since i'm using faiss-cpu already, no need to move it to cpu memory
         # index = faiss.index_gpu_to_cpu(index)
 
-        train_index[key] = index #store embeddings of each entity label's (<=10) contexts??
-    #-> loop thru all training samples -> calculate embedding of each entity label's list of contexts
+        train_index[key] = index 
+    #-> loop thru all entity label -> calculate embedding of each entity label's list of contexts
     #train_index vs train_sentence align in index
+    
+    print ("In test set")
 
     example_idx = []
     example_value = []
     if test_index is None: #test_index la gi ta?? the result?!?? 0.0 what??
         for idx_ in range(len(test_mrc_data)): # ua sao ko enumerate(test_mrc_data) nua di
+            # print("-test sample id = " + str(idx_))
             context = test_mrc_data[idx_]["context"]
             label = test_mrc_data[idx_]["entity_label"]
+           # print("this test set co label " + label)
             # for each test sample -> get the embedding of its context
             # -> search for knn_num nearest neighbor of that sample's label's context in the training set?
             embedding = sim_model.encode([context], batch_size=128, normalize_to_unit=True, keepdim=True, return_numpy=True)
+            # print("---done encode context")
             top_value, top_index = train_index[label].search(embedding.astype(np.float32), knn_num)
             # get the k nearest contexts with the values of contexts and their indices in the training set
 
             #why [0] only?? the nearest neighbor thui ha? or maybe that's how .search result is formatted??
-            example_idx.append([train_sentence_index[label][int(i)] for i in top_index[0]])
+            example_idx.append([train_sentence_index[label][int(i)] for i in top_index[0]]) #[0] gi vay??
             # maybe [0] stores all k neighbor 
             #-> loop through [0], foreach neighbor -> add its index in the train_set and its embedding value?
             example_value.append([float(value) for value in top_value[0]])
         
         #return test_set[index] -> example_value[index]((a list of k neighbor's embedding context))
-        # example_idx[index]((a list of the neighbors' index in the train set))
+        # example_idx[index]((a list of the neighbors' index in the train set[label]))
+        # print(str(example_idx))
+        # print(str(example_value))
         return example_idx, example_value
     #to pass in another test set other than the mrc-ner.test a???
     for idx_, sub_index in enumerate(test_index):
@@ -164,18 +180,19 @@ def random_knn(test_mrc_data, train_mrc_data, knn_num):
     print("------>HERE AT random_knn")
     train_sentence = {}
     train_sentence_index = {}
+    print("done group train data")
     for idx_, item in enumerate(train_mrc_data):
         label = item["entity_label"]
         context = item["context"]
-
-        if label not in train_sentence:
-            train_sentence[label] = []
-            train_sentence_index[label] = []
-        train_sentence[label].append(context)
-        train_sentence_index[label].append(idx_)
+        if item["impossible"] == False:
+            if label not in train_sentence:
+                train_sentence[label] = []
+                train_sentence_index[label] = []
+            train_sentence[label].append(context)
+            train_sentence_index[label].append(idx_)
 
     example_idx = []
-
+    print("test data")
     for idx_ in range(len(test_mrc_data)):
         context = test_mrc_data[idx_]["context"]
         label = test_mrc_data[idx_]["entity_label"]
@@ -196,63 +213,31 @@ if __name__ == '__main__':
 
     cwd = os.getcwd() # Get the current working directory (cwd)
     files = os.listdir(cwd)  # Get all the files in that directory"
+
+    test_mrc_data = read_mrc_data(dir_="data\\phoNER_COVID19", prefix="test_500_converted")
+    train_mrc_data = read_mrc_data(dir_="data\\phoNER_COVID19", prefix="train_converted")
+    index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=10)
+    # index_, value = random_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data,knn_num=10)
+    write_file(dir_="data\\phoNER_COVID19\\test_500_simsce_10.knn.jsonl", data=index_) #only store the indices matrix thui
     
-    # test_info, test_features, test_index = read_feature(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/start_word_embedding", prefix="test.100")
-    # test_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/", prefix="test")
-    # train_info, train_features, train_index = read_feature(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/start_word_embedding", prefix="train.dev")
-    # train_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/", prefix="train.dev")
-    # # test_info, test_features, test_index = read_feature(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/start_word_embedding_sorted", prefix="test")
-    # # test_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/", prefix="test")
-    # # train_info, train_features, train_index = read_feature(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/start_word_embedding_sorted", prefix="train.dev.sorted")
-    # # train_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/", prefix="train.dev.sorted")
+    train_sentence = {} #train_sentence[entity_label][a list of its contexts in the training set]
+    train_sentence_index = {} #train_sentence_index[entity_label][list of the above corresponding index in the training set]
+    for idx_, item in enumerate(train_mrc_data):
+        label = item["entity_label"]
+        context = item["context"]
+        if label not in train_sentence:     
+            train_sentence[label] = []
+            train_sentence_index[label] = []
+        train_sentence[label].append(context) #group train samples by label
+        train_sentence_index[label].append(idx_)    #and note lai index cua no
 
-    # mrc_knn_idx, mrc_knn_value = compute_mrc_knn(test_info=test_info, test_features=test_features, train_info=train_info, train_features=train_features, train_index=train_index, knn_num=32)
-    # simcse_knn_idx, simcse_knn_value = compute_simcse_knn(test_index=test_index, test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-
-    # combined_data = combine_full_knn(test_index=test_index, mrc_knn_index=mrc_knn_idx, simcse_knn_index=simcse_knn_idx)
-
-    # write_file(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/start_word_embedding/test.100.full.knn.jsonl", data=combined_data)
-    # # write_file(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/start_word_embedding_sorted/test.full.knn.jsonl", data=combined_data)
-
-
-    # test_info, test_features, test_index = read_feature(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/zh_onto4/start_word_embedding", prefix="test")
-    # test_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/zh_onto4/", prefix="test")
-    # train_info, train_features, train_index = read_feature(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/zh_onto4/start_word_embedding", prefix="train.dev")
-    # train_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/zh_onto4/", prefix="train.dev")
-
-    # mrc_knn_idx, mrc_knn_value = compute_mrc_knn(test_info=test_info, test_features=test_features, train_info=train_info, train_features=train_features, train_index=train_index, knn_num=32)
-    # text2vec_knn_idx = read_idx(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/zh_onto4", prefix="test.embedding")
-
-    # combined_data = combine_full_knn(test_index=test_index, mrc_knn_index=mrc_knn_idx, simcse_knn_index=text2vec_knn_idx)
-
-    # write_file(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/zh_onto4/start_word_embedding/test.mrc.knn.jsonl", data=combined_data)
-
-    # test_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/low_resource", prefix="test")
-    # train_mrc_data = read_mrc_data(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/low_resource", prefix="train.1")
-    # index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-    # write_file(dir_="/nfs/shuhe/gpt3-ner/gpt3-data/conll_mrc/low_resource/low_resource_1_knn/test.simcse.knn.jsonl", data=index_)
-
-    # test_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc", prefix="test")
-    # train_mrc_data = read_mrc_data(dir_="/home/wangshuhe/gpt-ner/openai_access/low_resource_data/conll_en", prefix="train.8")
-    # index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-    # write_file(dir_="/home/wangshuhe/gpt-ner/openai_access/low_resource_data/conll_en/test.8.embedding.knn.jsonl", data=index_)
-
-    test_mrc_data = read_mrc_data(dir_="data/conll_mrc", prefix="test.100")
-    train_mrc_data = read_mrc_data(dir_="data/conll_mrc", prefix="train")
-    index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-    write_file(dir_="data/conll_mrc/test.100.simcse.32.knn.jsonl", data=index_) #only store the indices matrix thui
-
-    # test_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/low_resource", prefix="test")
-    # train_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/low_resource", prefix="train.10000")
-    # index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-    # write_file(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/low_resource/test.10000.simcse.32.knn.jsonl", data=index_)
-
-    # test_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc", prefix="test")
-    # train_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc", prefix="train.dev")
-    # index_, value_ = random_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-    # write_file(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/conll_mrc/test.random.32.knn.jsonl", data=index_)
-
-    # test_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/ontonotes5_mrc", prefix="test.100")
-    # train_mrc_data = read_mrc_data(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/ontonotes5_mrc", prefix="dev")
-    # index_, value_ = compute_simcse_knn(test_mrc_data=test_mrc_data, train_mrc_data=train_mrc_data, knn_num=32)
-    # write_file(dir_="/data2/wangshuhe/gpt3_ner/gpt3-data/ontonotes5_mrc/test.100.simcse.dev.32.knn.jsonl", data=index_)
+    print("max index of test_data = " + str(len(test_mrc_data)))
+    for i in range(10):
+        test_label = test_mrc_data[i]["entity_label"]
+        print("the test sentence is: " + test_mrc_data[i]["context"] + " of label " + test_label)
+        list_index = index_[i]
+        print("list id of neighbor is " + str(list_index))
+        for idx_ in range (3):
+            print("neighbor #"+str(idx_)+": " + train_mrc_data[list_index[idx_]]["context"])
+        print("----------")
+   

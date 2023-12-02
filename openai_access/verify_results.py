@@ -16,14 +16,14 @@ logger = get_logger(__name__)
 def get_parser():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--mrc-dir", type=str, help="directory for the mrc input")
-    parser.add_argument("--mrc-name", type=str, help="file name for the mrc input")
-    parser.add_argument("--gpt-dir", type=str, help="directory for the gpt input")
-    parser.add_argument("--gpt-name", type=str, help="file name for the gpt input")
-    parser.add_argument("--data-name", type=str, help="dataset name for the input")
-    parser.add_argument("--knn-file", default="None", type=str, help="knn file for the input")
-    parser.add_argument("--write-dir", type=str, help="directory for the output")
-    parser.add_argument("--write-name", type=str, help="file name for the output")
+    parser.add_argument("--mrc-dir", type=str, help="directory for the mrc input")  #data\conll_mrc\
+    parser.add_argument("--mrc-name", type=str, help="file name for the mrc input") #.test.100
+    parser.add_argument("--gpt-dir", type=str, help="directory for the gpt input")  #data\conll_mrc\100-results\
+    parser.add_argument("--gpt-name", type=str, help="file name for the gpt input") #openai.32.knn.sequence.fullprompt // tmp.test
+    parser.add_argument("--data-name", type=str, help="dataset name for the input") #CONLL
+    parser.add_argument("--knn-file", default="None", type=str, help="knn file for the input") 
+    parser.add_argument("--write-dir", type=str, help="directory for the output") # data\conll_mrc\100-results\
+    parser.add_argument("--write-name", type=str, help="file name for the output")  #openai.32.knn.sequence.fullprompt.verified
     parser.add_argument("--knn-num", type=int, default=1, help="numebr for the knn")
     
     return parser

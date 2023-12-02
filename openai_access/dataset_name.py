@@ -1,4 +1,28 @@
 FULL_DATA = {
+    "phoNER_COVID19" : {
+        "PATIENT_ID": ("PATIENT_ID", "Unique identifier of a COVID-19 patient in Vietnam. An PATIENT_ID annotation over “X” refers to as the Xth patient having COVID-19 in Vietnam"),
+        "NAME": ("NAME", "Name of a patient or person who comes into contact with a patient"),
+        "AGE": ("AGE", "Age of a patient or person who comes into contact with a patient"),
+        "GENDER": ("GENDER", "Gender of a patient or person who comes into contact with a patient"),
+        "JOB": ("JOB", "Job of a patient or person who comes into contact with a patient"),
+        "LOCATION": ("LOCATION", "Locations/places that a patient was presented at"),
+        "ORGANIZATION": ("ORGANIZATION", "Organizations related to a patient, e.g. company, government organization, and the like, with structures and their own functions"),
+        "SYMPTOM_AND_DISEASE": ("SYMPTOM_AND_DISEASE", "Symptoms that a patient experiences, and diseases that a patient had prior to COVID-19 or complications that usually appear in death reports"),
+        "TRANSPORTATION": ("TRANSPORTATION", "Means of transportation that a patient used. Here, we only tag the specific identifier of vehicles, e.g. flight numbers and bus/car plates"),
+        "DATE": ("DATE", "Any date that appears in the sentence")
+    },
+     "phoNER_COVID19_vie" : {
+        "PATIENT_ID": ("PATIENT_ID", "là số định danh cho một bệnh nhân mắc COVID-19 tại Việt Nam. Một bệnh nhân có số PATIENT_ID X nghĩa là bệnh nhân đó là người thứ X mắc COVID-19 tại Việt Nam"),
+        "NAME": ("NAME", "là tên của bệnh nhân mắc COVID-19 hoặc của người có tiếp xúc với bệnh nhân COVID-19"),
+        "AGE": ("AGE", "là tuổi của bệnh nhân COVID-19 hoặc của người có tiếp xúc với bệnh nhân"),
+        "GENDER": ("GENDER", "là giới tính của bệnh nhân COVID-19 hoặc người có tiếp xúc với bệnh nhân"),
+        "JOB": ("JOB", "là công việc, nghề nghiệp của bệnh nhân COVID-19 hoặc người có tiếp xúc với bệnh nhân"),
+        "LOCATION": ("LOCATION", "là các địa điểm, những nơi mà bệnh nhân COVID-19 đã đến"),
+        "ORGANIZATION": ("ORGANIZATION", "là các tổ chức có liên quan đến bệnh nhân COVID-19 ví dụ như công ty, doanh nghiệp, tổ chức chính phủ, cơ quan"),
+        "SYMPTOM_AND_DISEASE": ("SYMPTOM_AND_DISEASE", "là các triệu chứng mà bệnh nhân COVID-19 mắc phải, hoặc các bệnh mà bệnh nhân đã có trước khi mắc COVID-19, hoặc các biến chứng khác thường thấy trong báo cáo tử vong, trong hồ sơ bệnh án"),
+        "TRANSPORTATION": ("TRANSPORTATION", "là biến số xe máy, biển số xe ô tô, số hiệu máy bay, xe bus, hay của các phương tiện giao thông mà bệnh nhân COVID-19 sử dụng"),
+        "DATE": ("DATE", "là tất cả ngày, ngày tháng xuất hiện trong câu")
+    },
     "CONLL": {
         "ORG": ("organization", "are limited to named corporate, governmental, or other organizational entities"),
         "PER": ("person", "are named persons or family"),

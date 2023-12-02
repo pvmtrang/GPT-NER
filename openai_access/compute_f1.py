@@ -1,3 +1,5 @@
+# coding: utf8
+
 import json
 from tqdm import tqdm
 import argparse
@@ -12,18 +14,22 @@ def get_parser():
 
 def read_openai_file(file_name):
     print(f"read ... {file_name}")
-
-    file = open(file_name, "r")
     results = []
-    for line in tqdm(file):
-        results.append(line.strip())
-    file.close()
+    with open(file_name, "r",encoding='utf-8') as file:
+        for line in file:
+            results.append(line.strip())
+    return results
+    # file = open(file_name, "r")
+    # results = []
+    # for line in tqdm(file):
+    #     results.append(line.strip())
+    # file.close()
     return results
 
 def read_mrc_file(file_name):
     print(f"read ... {file_name}")
-
-    return json.load(open(file_name))
+    return json.load((open(file_name, encoding="utf-8")))
+    # return json.load(open(file_name))
 
 def compute_f1(mrc_data, openai_data):
     print("computting f1 ...")
@@ -32,31 +38,40 @@ def compute_f1(mrc_data, openai_data):
     false_positive = 0
     false_negitative = 0
     for idx_ in range(len(mrc_data)):
+        print("-------For idx_= " + str(idx_))
         reference = []
         candidate = []
         item_ = mrc_data[idx_]
+        print("entity tag: " + str(item_["entity_label"]))
         context_list = item_["context"].strip().split()
         for sub_idx in range(len(item_["start_position"])):
             start_ = item_["start_position"][sub_idx]
             end_ = item_["end_position"][sub_idx]
             reference.append((" ".join(context_list[start_:end_+1]), start_, end_))
+            # print("reference: " + str(reference))
         
 
         flag = False
         candidate_sentence = openai_data[idx_]
+        print("candidate_sentence: " + str(candidate_sentence))
         candidate_sentence_list = candidate_sentence.strip().split()
         start_ = 0
         for word_idx, word in enumerate(candidate_sentence_list):
             if len(word) > 2 and word[0] == '@' and word[1] == '@':
                 flag = True
+                # print("start token at: " + str(word_idx))
                 for end_ in range(word_idx, len(candidate_sentence_list)):
                     end_word = candidate_sentence_list[end_]
                     if len(end_word) > 2 and end_word[-1] == '#' and end_word[-2] == '#':
+                        # print("end token at: " + str(end_))
                         entity_ = " ".join(candidate_sentence_list[word_idx:end_+1])[2:-2]
+                        # print("extracted entity: " + str(entity_))
                         len_ = end_ - word_idx + 1
+                        # print("length: " + str(len_))
                         while start_ < len(context_list):
                             if start_ + len_ - 1 < len(context_list) and " ".join(context_list[start_:start_+len_]) == entity_:
                                 candidate.append((" ".join(context_list[start_:start_+len_]), start_, start_ + len_ - 1))
+                                # print("candidate: " + str(candidate[-1]))
                                 break
                             start_ += 1
                         break
@@ -79,8 +94,8 @@ def compute_f1(mrc_data, openai_data):
         #         flag = False
         #         candidate.append((" ".join(context_list[start_:word_idx+1])[2:-2], start_, word_idx))
         
-        # print(f"ref: {reference}")
-        # print(f"can: {candidate}")
+        print(f"ref: {reference}")
+        print(f"can: {candidate}")
         for span_item in candidate:
             if span_item in reference:
                 reference.remove(span_item)

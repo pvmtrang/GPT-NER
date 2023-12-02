@@ -9,8 +9,8 @@ import openai
 from tqdm import tqdm
 
 # use custom logger file
-from logger import get_logger 
-logger = get_logger(__name__) 
+# from logger import get_logger 
+# logger = get_logger(__name__) 
 
 # use pythonjsonlogger
 # import logging
@@ -34,6 +34,7 @@ class AccessBase(object):
 
     def _get_multiple_sample(self, prompt_list: List[str]):
         openai.api_key = os.environ["OPENAI_API_KEY"]
+        print (openai.api_key)
         response = openai.Completion.create(
             engine=self.engine,
             prompt=prompt_list,
@@ -44,9 +45,11 @@ class AccessBase(object):
             presence_penalty=self.presence_penalty,
             best_of=self.best_of
         )
+        print(str(response))
         results = [choice.text for choice in response.choices]
         # assert LOG_LEVEL == "INFO"
-        logger.info(msg="prompt_and_result", extra={"prompt_list": prompt_list, "results": results})
+        # logger.info(msg="prompt_and_result", extra={"prompt_list": prompt_list, "results": results})
+        print("prompt_and_result", extra={"prompt_list": prompt_list, "results": results})
         return results
 
     def get_multiple_sample(self, prompt_list: List[str], jitter: bool = True,):
@@ -59,7 +62,8 @@ class AccessBase(object):
         while True:
             used_delay = AccessBase.delay
             try:
-                logger.info(f"Delay={used_delay - 1}")
+                # logger.info(f"Delay={used_delay - 1}")
+                print(f"Delay={used_delay - 1}")
                 for _ in tqdm(range(ceil(used_delay - 1)), desc=f"sleep{used_delay - 1}"):
                     time.sleep(1)
 
@@ -67,12 +71,14 @@ class AccessBase(object):
                 AccessBase.delay = INIT_DELAY
                 return results
             except errors as e:
-                logger.info("retry ...")
+                # logger.info("retry ...")
+                print("retry...")
                 # Increment retries
                 num_retries += 1
                 # Check if max retries has been reached
                 if num_retries > MAX_RETRIES:
-                    logger.error("failed")
+                    # logger.error("failed")
+                    print("failed")
                     raise Exception(f"Maximum number of retries ({MAX_RETRIES}) exceeded.")
                 # Increment the delay
                 AccessBase.delay = max(AccessBase.delay, used_delay * EXPONENTIAL_BASE * (1 + jitter * random.random()))
@@ -80,12 +86,14 @@ class AccessBase(object):
 
             # Raise exceptions for any errors not specified
             except Exception as e:
-                logger.info("retry ...")
+                # logger.info("retry ...")
+                print("retry...")
                 # Increment retries
                 num_retries += 1
                 # Check if max retries has been reached
                 if num_retries > MAX_RETRIES:
-                    logger.error("failed")
+                    # logger.error("failed")
+                    print("failed")
                     raise Exception(f"Maximum number of retries ({MAX_RETRIES}) exceeded.")
                 # Increment the delay
                 AccessBase.delay = max(AccessBase.delay, used_delay * EXPONENTIAL_BASE * (1 + jitter * random.random()))
